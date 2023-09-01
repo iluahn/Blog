@@ -1,0 +1,13 @@
+{% extends 'blogs_app/base.html' %}
+{% load bootstrap4 %}
+
+{% block header %}
+  <div class="jumbotron">
+    <h1 class="display-3">Welcome to the Blog App!</h1>
+	<p class="lead">You can read, create and edit posts here. Editing requires authorization.</p>
+    {% buttons %}
+      <a class="btn btn-lg btn-primary" href="{% url 'blogs_app:posts' %}">
+	    Go to posts &raquo;</a>
+    {% endbuttons %}
+  </div>
+{% endblock header %}
