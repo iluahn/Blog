@@ -42,7 +42,10 @@ def edit_post(request, post_id):
         raise Http404
     if(request.method != 'POST'):
         form = PostForm(instance=post)
-    else:
+    elif("delete" in request.POST):
+        post.delete()
+        return redirect('blogs_app:posts')
+    elif("save" in request.POST):
         form = PostForm(data=request.POST, instance=post)
         if(form.is_valid()):
             form.save()
