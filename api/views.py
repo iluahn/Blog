@@ -8,23 +8,31 @@ import json
 
 @api_view(['GET'])
 def get_post(request, post_id):
-    post = BlogPost.objects.get(id=post_id)
-    serializer = BlogPostSerializer(post, many=False)
+    """Получение записи по post_id. Only GET-method"""
+    try:
+        post = BlogPost.objects.get(id=post_id)
+    except BlogPost.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+    serializer = BlogPostSerializer(post)
     return Response(serializer.data)
 
 @api_view(['GET'])
 def posts(request):
+    """Получение всех записей. Only GET-method"""
     posts = BlogPost.objects.all()
     serializer = BlogPostSerializer(posts, many=True)
     return Response(serializer.data)
 
 @api_view(['POST'])
 def add_post(request):
+    """Добавление записи. Only POST-method. \
+        Проверка валидности заполненных полей проверяется сериалайзером"""
     serializer = BlogPostSerializer(data=request.data)
     if(serializer.is_valid()):
         serializer.save()
-    # вот здесь else будет
-    return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET','PUT'])
 def edit_post(request, post_id):
