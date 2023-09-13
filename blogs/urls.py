@@ -23,5 +23,6 @@ handler500='blogs_app.views.custom500'
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('blogs_app.urls')),
-    path('users/', include('users.urls'))
+    path('users/', include('users.urls')),
+    path('api/', include('api.urls'))
 ]

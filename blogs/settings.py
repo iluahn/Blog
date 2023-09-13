@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'users',
     # side-apps
     'bootstrap4',
+    'rest_framework',
     # default apps
     'django.contrib.admin',
     'django.contrib.auth',
