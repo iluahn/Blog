@@ -11,9 +11,9 @@
   <form action="{% url 'users:register' %}" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
-	{% buttons %}
+	  {% buttons %}
       <button name="submit" class="btn btn-primary">Register</button>
-	{% endbuttons %}
+	  {% endbuttons %}
     <input type="hidden" name="nest" value="{% url 'blogs_app:posts' %}" />
   </form>
 
