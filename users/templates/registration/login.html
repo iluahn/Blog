@@ -5,24 +5,24 @@
   <h4>Log in</h4>
 {% endblock header %}
 
+
 {% block content %}
   
-
   <div class="card">
     <span class="card-header" >
       Don't have account yet? - 
-	  <a href="{% url 'users:register' %}">Register</a>
+	    <a href="{% url 'users:register' %}">Register</a>
     </span>
     <div class="card-body">
       <form action="{% url 'users:login' %}" method="post">
         {% csrf_token %}
         {% bootstrap_form form %}
-		<div class="pt-3">
-		{% buttons %}
-		  <button name="submit" class="btn btn-primary">Log in</button>
-		{% endbuttons %}
-		</div>
-		<input type="hidden" name="next" value="{% url 'blogs_app:posts' %}"/>
+		    <div class="pt-3">
+		      {% buttons %}
+		        <button name="submit" class="btn btn-primary">Log in</button>
+		      {% endbuttons %}
+		    </div>
+		    <input type="hidden" name="next" value="{% url 'blogs_app:posts' %}"/>
       </form>
     </div>
   </div>
