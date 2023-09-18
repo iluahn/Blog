@@ -13,6 +13,8 @@ app_name = 'api'
 urlpatterns = [
     # выводим доступные маршруты
     path('', views.get_routes, name="get_routes"),
+    # регистрация
+    path('signup/', views.signup, name = "signup"),
     # получение всех постов
     path('posts/', views.posts, name='posts'),
     # получение поста

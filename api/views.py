@@ -5,14 +5,16 @@ from rest_framework.authentication import TokenAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.exceptions import PermissionDenied
 from blogs_app.models import BlogPost
-from .serializers import BlogPostSerializer
+from .serializers import BlogPostSerializer, UserSerializer
 from django.shortcuts import get_object_or_404
+from django.contrib.auth.models import User
 import json
 
 @api_view(['GET'])
 def get_routes(request):
     """Вывод информации о существующих маршрутах"""
     routes = {
+        'api/signup/': "signup in system",
         'api/token/obtain/': "get access- and refresh-token by given valid username and password",
         'api/token/refresh/': "refresh access-token by given valid refresh-token",
         'api/posts/': "get all posts (no authorization required)",
@@ -23,6 +25,20 @@ def get_routes(request):
     }
     return Response(routes)
 
+@api_view(['POST', 'GET'])
+def signup(request):
+    """Регистрация пользователя. Валидность заполненных полей проверяется сериалайзером"""
+    if(request.method == 'GET'):
+        return Response({"info": "'username' and 'password' fields are required"})
+    serializer = UserSerializer(data=request.data)
+    if(not serializer.is_valid()):
+        return Response(serializer.error_messages, status=status.HTTP_400_BAD_REQUEST)
+    serializer.save()
+    user = User.objects.get(username=serializer.data['username'])
+    # хэшируем пароль, а затем сохраняем обновленный пароль в БД
+    user.set_password(user.password)
+    user.save()
+    return Response({"info": f"user {user.username} succesfully created!"}, status=status.HTTP_201_CREATED)
 
 @api_view(['GET'])
 def get_post(request, post_id):
@@ -46,7 +62,7 @@ def posts(request):
 @permission_classes([IsAuthenticated])
 def add_post(request):
     """Добавление записи. Only POST-method. \
-        Проверка валидности заполненных полей проверяется сериалайзером"""
+        Валидность заполненных полей проверяется сериалайзером"""
     serializer = BlogPostSerializer(data=request.data)
     if(serializer.is_valid()):
         serializer.save()
