@@ -93,11 +93,11 @@ def edit_post(request, post_id):
     # при PUT берем данные из request и дополняем их значениями текущей записи (если не хватает)
     elif(request.method == 'PUT'):
         new_data = request.data.copy()
-        if(not new_data.get('title')):
+        if(new_data.get('title') is None):
             new_data['title'] = post.title
-        if(not new_data.get('text')):
+        if(new_data.get('text') is None):
             new_data['text'] = post.text
-        if(not new_data.get('owner')):
+        if(new_data.get('owner') is None):
             new_data['owner'] = post.owner.id
         # не забыть передать instance, чтобы изменялась текущая запись, а не создавалась новая
         serializer = BlogPostSerializer(instance=post, data=new_data)

@@ -1,6 +1,6 @@
 /*.txt
 /db.sqlite3
 blog_venv/
-blogs/setting.py
+blogs/settings.py
 **/migrations/
 **/__pycache__/
